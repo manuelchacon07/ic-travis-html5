@@ -12,12 +12,24 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    
     - name: setup node
       uses: actions/setup-node@v1
       with:
         node-version: '10.x'
+      
     - name: Install Dependencies
       run: npm install --global surge
+      
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.6'
+    - name: install html5validator
+      run: pip install html5validator
+    - name: run html5validator
+      run: html5validator --root _build/
+
     - name: Deploy on surge
       run: surge ./ ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
         
